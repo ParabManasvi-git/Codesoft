@@ -1,0 +1,711 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Apex Studio - Creative Agency</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: #0a0a0a;
+            color: #fff;
+            overflow-x: hidden;
+        }
+
+        /* Animated background particles */
+        .bg-animation {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            z-index: 0;
+            overflow: hidden;
+        }
+
+        .particle {
+            position: absolute;
+            width: 3px;
+            height: 3px;
+            background: #00ff88;
+            border-radius: 50%;
+            opacity: 0.3;
+            animation: rise 15s infinite ease-in;
+        }
+
+        .particle:nth-child(1) { left: 10%; animation-delay: 0s; }
+        .particle:nth-child(2) { left: 25%; animation-delay: 2s; }
+        .particle:nth-child(3) { left: 40%; animation-delay: 4s; }
+        .particle:nth-child(4) { left: 55%; animation-delay: 1s; }
+        .particle:nth-child(5) { left: 70%; animation-delay: 3s; }
+        .particle:nth-child(6) { left: 85%; animation-delay: 5s; }
+
+        @keyframes rise {
+            0% {
+                bottom: -10%;
+                transform: translateX(0) scale(1);
+                opacity: 0;
+            }
+            50% {
+                opacity: 0.3;
+            }
+            100% {
+                bottom: 110%;
+                transform: translateX(100px) scale(0.5);
+                opacity: 0;
+            }
+        }
+
+        /* Smooth scrolling */
+        html {
+            scroll-behavior: smooth;
+        }
+
+        header {
+            position: fixed;
+            width: 100%;
+            padding: 30px 100px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 100;
+            background: rgba(10, 10, 10, 0.8);
+            backdrop-filter: blur(20px);
+        }
+
+        .logo {
+            font-size: 32px;
+            font-weight: 900;
+            color: #00ff88;
+            letter-spacing: -1px;
+            text-transform: uppercase;
+        }
+
+        .menu {
+            display: flex;
+            gap: 50px;
+            list-style: none;
+        }
+
+        .menu a {
+            color: #fff;
+            text-decoration: none;
+            font-size: 15px;
+            font-weight: 500;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            position: relative;
+            transition: color 0.3s;
+        }
+
+        .menu a:hover {
+            color: #00ff88;
+        }
+
+        /* Mobile Menu Toggle */
+        .mobile-menu-toggle {
+            display: none;
+            flex-direction: column;
+            cursor: pointer;
+            gap: 5px;
+        }
+
+        .mobile-menu-toggle span {
+            width: 25px;
+            height: 3px;
+            background: #fff;
+            transition: 0.3s;
+        }
+
+        .hero {
+            position: relative;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0 100px;
+        }
+
+        .hero-content {
+            max-width: 1200px;
+            z-index: 1;
+        }
+
+        .hero h1 {
+            font-size: 120px;
+            font-weight: 900;
+            line-height: 1;
+            margin-bottom: 30px;
+            letter-spacing: -3px;
+            background: linear-gradient(135deg, #fff 0%, #00ff88 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: fadeInUp 1s ease;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(40px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .hero h2 {
+            font-size: 48px;
+            font-weight: 300;
+            margin-bottom: 40px;
+            color: #999;
+            animation: fadeInUp 1s ease 0.2s backwards;
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 20px;
+            animation: fadeInUp 1s ease 0.4s backwards;
+        }
+
+        .btn {
+            padding: 20px 50px;
+            font-size: 16px;
+            font-weight: 700;
+            text-decoration: none;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            border-radius: 0;
+            transition: all 0.3s;
+            display: inline-block;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-primary {
+            background: #00ff88;
+            color: #0a0a0a;
+            border: 2px solid #00ff88;
+        }
+
+        .btn-primary:hover {
+            background: transparent;
+            color: #00ff88;
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(0, 255, 136, 0.3);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: #fff;
+            border: 2px solid #fff;
+        }
+
+        .btn-secondary:hover {
+            background: #fff;
+            color: #0a0a0a;
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(255, 255, 255, 0.2);
+        }
+
+        .services {
+            padding: 150px 100px;
+            background: #0a0a0a;
+            position: relative;
+            z-index: 1;
+        }
+
+        .section-title {
+            font-size: 80px;
+            font-weight: 900;
+            margin-bottom: 80px;
+            text-align: center;
+            letter-spacing: -2px;
+        }
+
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 40px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .service-card {
+            background: #111;
+            padding: 60px 40px;
+            border: 1px solid #222;
+            transition: all 0.4s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .service-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: #00ff88;
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.4s;
+        }
+
+        .service-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .service-card:hover {
+            transform: translateY(-10px);
+            border-color: #00ff88;
+            background: #0f0f0f;
+        }
+
+        .service-number {
+            font-size: 24px;
+            color: #00ff88;
+            font-weight: 900;
+            margin-bottom: 20px;
+            display: block;
+        }
+
+        .service-card h3 {
+            font-size: 32px;
+            margin-bottom: 20px;
+            font-weight: 700;
+        }
+
+        .service-card p {
+            font-size: 16px;
+            line-height: 1.8;
+            color: #999;
+        }
+
+        /* WORK SECTION WITH IMAGES */
+        .work {
+            padding: 150px 100px;
+            background: #0a0a0a;
+            position: relative;
+            z-index: 1;
+        }
+
+        .work .section-title {
+            margin-bottom: 80px;
+        }
+
+        .work-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 30px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .work-item {
+            position: relative;
+            height: 350px;
+            border-radius: 8px;
+            overflow: hidden;
+            cursor: pointer;
+            transition: all 0.4s ease;
+            background: #111;
+        }
+
+        .work-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.4s ease;
+        }
+
+        .work-item:hover .work-image {
+            transform: scale(1.05);
+        }
+
+        .work-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(transparent, rgba(0,0,0,0.9));
+            padding: 30px;
+            transform: translateY(100%);
+            transition: transform 0.4s ease;
+        }
+
+        .work-item:hover .work-overlay {
+            transform: translateY(0);
+        }
+
+        .work-item:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0, 255, 136, 0.3);
+        }
+
+        .work-title {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 5px;
+            color: #fff;
+        }
+
+        .work-category {
+            color: #00ff88;
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .stats {
+            padding: 150px 100px;
+            background: linear-gradient(135deg, #00ff88 0%, #00cc6f 100%);
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 60px;
+            max-width: 1400px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .stat-item h3 {
+            font-size: 72px;
+            font-weight: 900;
+            color: #0a0a0a;
+            margin-bottom: 10px;
+        }
+
+        .stat-item p {
+            font-size: 18px;
+            color: #0a0a0a;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .cta-section {
+            padding: 150px 100px;
+            text-align: center;
+            background: #0a0a0a;
+            position: relative;
+            z-index: 1;
+        }
+
+        .cta-section h2 {
+            font-size: 72px;
+            font-weight: 900;
+            margin-bottom: 40px;
+            letter-spacing: -2px;
+        }
+
+        .cta-section p {
+            font-size: 24px;
+            color: #999;
+            margin-bottom: 50px;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        footer {
+            padding: 60px 100px;
+            background: #000;
+            text-align: center;
+            border-top: 1px solid #222;
+        }
+
+        footer p {
+            color: #666;
+            font-size: 14px;
+            letter-spacing: 1px;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1024px) {
+            header {
+                padding: 25px 50px;
+            }
+
+            .hero {
+                padding: 0 50px;
+            }
+
+            .hero h1 {
+                font-size: 80px;
+            }
+
+            .hero h2 {
+                font-size: 32px;
+            }
+
+            .services-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .work-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            header {
+                padding: 20px 30px;
+            }
+
+            .logo {
+                font-size: 24px;
+            }
+
+            .menu {
+                display: none;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                width: 100%;
+                background: rgba(10, 10, 10, 0.95);
+                flex-direction: column;
+                padding: 20px;
+                gap: 20px;
+            }
+
+            .menu.active {
+                display: flex;
+            }
+
+            .menu a {
+                font-size: 16px;
+                padding: 10px;
+            }
+
+            .mobile-menu-toggle {
+                display: flex;
+            }
+
+            .hero {
+                padding: 0 30px;
+                text-align: center;
+            }
+
+            .hero h1 {
+                font-size: 48px;
+            }
+
+            .hero h2 {
+                font-size: 24px;
+            }
+
+            .hero-buttons {
+                flex-direction: column;
+            }
+
+            .services, .work {
+                padding: 80px 30px;
+            }
+
+            .section-title {
+                font-size: 48px;
+            }
+
+            .services-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .stats {
+                padding: 80px 30px;
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr;
+                gap: 40px;
+            }
+
+            .cta-section {
+                padding: 80px 30px;
+            }
+
+            .cta-section h2 {
+                font-size: 40px;
+            }
+
+            .cta-section p {
+                font-size: 18px;
+            }
+
+            footer {
+                padding: 40px 30px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="bg-animation">
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+    </div>
+
+    <header>
+        <div class="logo">APEX</div>
+        <ul class="menu" id="menu">
+            <li><a href="#home">Home</a></li>
+            <li><a href="#services">Services</a></li>
+            <li><a href="#work">Work</a></li>
+            <li><a href="#contact">Contact</a></li>
+        </ul>
+        <div class="mobile-menu-toggle" id="mobileToggle">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+    </header>
+
+    <section class="hero" id="home">
+        <div class="hero-content">
+            <h1>CREATE<br>INSPIRE<br>ELEVATE</h1>
+            <h2>Crafting digital experiences that leave a mark</h2>
+            <div class="hero-buttons">
+                <a href="#services" class="btn btn-primary">Start Project</a>
+                <a href="#work" class="btn btn-secondary">View Work</a>
+            </div>
+        </div>
+    </section>
+
+    <section class="services" id="services">
+        <h2 class="section-title">What We Do</h2>
+        <div class="services-grid">
+            <div class="service-card">
+                <span class="service-number">01</span>
+                <h3>Brand Identity</h3>
+                <p>We create powerful brand identities that capture attention and build lasting connections with your audience through strategic design.</p>
+            </div>
+            <div class="service-card">
+                <span class="service-number">02</span>
+                <h3>Web Design</h3>
+                <p>Beautiful, functional websites that convert visitors into customers. Responsive design meets stunning aesthetics.</p>
+            </div>
+            <div class="service-card">
+                <span class="service-number">03</span>
+                <h3>Digital Strategy</h3>
+                <p>Data-driven strategies that drive growth and maximize ROI. We turn insights into actionable plans for success.</p>
+            </div>
+            <div class="service-card">
+                <span class="service-number">04</span>
+                <h3>UI/UX Design</h3>
+                <p>Intuitive interfaces that delight users. We design experiences that are both beautiful and effortlessly functional.</p>
+            </div>
+            <div class="service-card">
+                <span class="service-number">05</span>
+                <h3>Motion Graphics</h3>
+                <p>Bring your brand to life with captivating animations and motion design that tells your story dynamically.</p>
+            </div>
+            <div class="service-card">
+                <span class="service-number">06</span>
+                <h3>Development</h3>
+                <p>Cutting-edge development that brings designs to life. Fast, secure, and scalable solutions for modern businesses.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- WORK SECTION WITH FIXED IMAGES -->
+    <section class="work" id="work">
+        <h2 class="section-title">Our Work</h2>
+        <div class="work-grid">
+            <div class="work-item">
+                <img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80" alt="E-Commerce Platform" class="work-image">
+                <div class="work-overlay">
+                    <div class="work-title">E-Commerce Platform</div>
+                    <div class="work-category">Web Design & Development</div>
+                </div>
+            </div>
+            <div class="work-item">
+                <img src="https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80" alt="Brand Refresh" class="work-image">
+                <div class="work-overlay">
+                    <div class="work-title">Brand Refresh</div>
+                    <div class="work-category">Brand Identity</div>
+                </div>
+            </div>
+            <div class="work-item">
+                <img src="https://images.unsplash.com/photo-1517336714731-489689fd1ca8?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80" alt="Mobile App" class="work-image">
+                <div class="work-overlay">
+                    <div class="work-title">Mobile App</div>
+                    <div class="work-category">UI/UX Design</div>
+                </div>
+            </div>
+            <div class="work-item">
+                <!-- FIXED: New working marketing image URL -->
+                <img src="https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80" alt="Marketing Campaign" class="work-image">
+                <div class="work-overlay">
+                    <div class="work-title">Marketing Campaign</div>
+                    <div class="work-category">Digital Strategy</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="stats">
+        <div class="stats-grid">
+            <div class="stat-item">
+                <h3>250+</h3>
+                <p>Projects</p>
+            </div>
+            <div class="stat-item">
+                <h3>98%</h3>
+                <p>Satisfaction</p>
+            </div>
+            <div class="stat-item">
+                <h3>50+</h3>
+                <p>Clients</p>
+            </div>
+            <div class="stat-item">
+                <h3>24/7</h3>
+                <p>Support</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="cta-section" id="contact">
+        <h2>Ready to Start?</h2>
+        <p>Let's collaborate and create something extraordinary together. Your vision, our expertise.</p>
+        <a href="#contact" class="btn btn-primary">Get In Touch</a>
+    </section>
+
+    <footer>
+        <p>&copy; 2025 APEX STUDIO. ALL RIGHTS RESERVED. DESIGNED WITH PASSION BY MANASVI PARAB.</p>
+    </footer>
+
+    <script>
+        // Mobile menu toggle
+        const mobileToggle = document.getElementById('mobileToggle');
+        const menu = document.getElementById('menu');
+
+        mobileToggle.addEventListener('click', () => {
+            menu.classList.toggle('active');
+        });
+
+        // Close mobile menu when clicking on a link
+        document.querySelectorAll('.menu a').forEach(link => {
+            link.addEventListener('click', () => {
+                menu.classList.remove('active');
+            });
+        });
+    </script>
+</body>
+</html>
